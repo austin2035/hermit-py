@@ -164,7 +164,6 @@ class Hermit(object):
             if not self._is_clickable(key, value):
                 count = 5
                 while count:
-                    print("开始判断", count)
                     if self._is_clickable(key, value):
                         break
                     else:
