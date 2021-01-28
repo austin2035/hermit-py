@@ -5,6 +5,64 @@
 
 ### 未来  
 如果反响尚可，会持续优化，注入更多新的功能，比如可视化查看组件信息等。
+
+### 请先看三个演示，再阅读下方的详细说明
+### 演示1：群聊抢红包  
+![](https://www.lookcos.cn/wp-content/uploads/2021/01/2021012805375112.gif)
+```python
+import time
+from pyhermit import Hermit
+
+hm = Hermit('127.0.0.1:9999')
+
+# 每隔0.1秒监视一次
+while not hm._is_clickable('text', '微信红包'):
+    time.sleep(0.1)
+
+hm.click_text('微信红包')
+# 模拟器配置低，打开红包过程略慢，需要等待1秒钟，才能再开。
+hm.click_desc('开', 1)
+```
+
+### 演示2：打开酷安并快速找到并进入iPhone SE区  
+![](https://www.lookcos.cn/wp-content/uploads/2021/01/2021012805074049.gif)
+
+```python
+import time
+from pyhermit import Hermit
+# 实例化
+hm = Hermit('127.0.0.1:9999')
+# 按下home键
+hm.action_home()
+hm.click_channel([
+    {'text': '酷安'}, {'text': '闲聊'},
+    {'text': '数码'}, {'text': '平板'},
+    {'text': '手机'}, {'text': '苹果'}
+])
+# 如果没找到，就一直下滑，直到找到为止。
+while not hm._is_clickable('text', 'iPhone SE'):
+    hm.swipe_up(4)
+    time.sleep(0.2)
+hm.click_text('iPhone SE')
+```
+
+###演示3： 打开微信，并搜索v2ex  
+![](https://www.lookcos.cn/wp-content/uploads/2021/01/202101280528008.gif)
+```python
+import time
+from pyhermit import Hermit
+
+hm = Hermit('127.0.0.1:9999')
+
+hm.click_text('微信', 1)
+hm.shell_tap(670, 86)
+time.sleep(1)
+hm.input('id', 'com.tencent.mm:id/bhn', 'v2ex')
+hm.click_id('com.tencent.mm:id/b3b', 1)
+time.sleep(5) # 等待搜索结果
+hm.swipe_up(5)
+```  
+
 ### 实例化  
 在此之前，请确保要操作设备已经安装了hermit APP。
 ```python
