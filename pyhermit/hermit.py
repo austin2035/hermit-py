@@ -75,24 +75,24 @@ class Hermit(object):
         """基于无障碍的截屏，限制Android 9.0"""
         return self._action('screen_shot')
 
-    def _click(self, by: str, obj: str, sleep: int = 0):
+    def _click(self, by: str, obj: str, sleep: float = 0):
         time.sleep(sleep)
         result = self.request('/click/{0}?obj={1}'.format(by, obj)).json()
         if result['code']:
             return result['msg']
         return True
 
-    def click_id(self, id_name: str, sleep: int = 0):
+    def click_id(self, id_name: str, sleep: float = 0):
         """基于无障碍的根据资源ID点击"""
         time.sleep(sleep)
         return self._click('id', id_name)
 
-    def click_text(self, text: str, sleep: int = 0):
+    def click_text(self, text: str, sleep: float = 0):
         """基于无障碍的根据资源文本点击"""
         time.sleep(sleep)
         return self._click('text', text)
 
-    def click_desc(self, desc: str, sleep: int = 0):
+    def click_desc(self, desc: str, sleep: float = 0):
         """基于无障碍的根据资源描述点击"""
         time.sleep(sleep)
         return self._click('desc', desc)
@@ -117,14 +117,14 @@ class Hermit(object):
             return True
         return False
 
-    def shell_keyevent(self, key: int, sleep: int = 0):
+    def shell_keyevent(self, key: int, sleep: float = 0):
         time.sleep(sleep)
         result = self.request('/shell/keyevent?keycode=' + str(key)).json()
         if result['code']:
             return False
         return True
 
-    def shell_tap(self, x: int, y: int, sleep: int = 0):
+    def shell_tap(self, x: int, y: int, sleep: float = 0):
         """通过shell的方式，点击（x, y）"""
         time.sleep(sleep)
         result = self.request('/shell/tap?x={0}&y={1}'.format(x, y)).json()
@@ -132,14 +132,14 @@ class Hermit(object):
             return False
         return True
 
-    def shell_swipe(self, x1: int, y1: int, x2: int, y2: int, sleep: int = 0):
+    def shell_swipe(self, x1: int, y1: int, x2: int, y2: int, sleep: float = 0):
         """通过shell的方式 从（x1, y1）滑动到（x2, y2）"""
         result = self.request('/shell/swipe?x1={0}&y1={1}&x2={2}&y2={3}'.format(x1, y1, x2, y2)).json()
         if result['code']:
             return False
         return True
 
-    def input(self, by: str, obj: str, text: str, sleep: int = 0):
+    def input(self, by: str, obj: str, text: str, sleep: float = 0):
         rs = self.request('/input?by={0}&obj={1}&text={2}'.format(by, obj, text))
         return True
 
@@ -153,8 +153,7 @@ class Hermit(object):
             attr = 'content-desc'
         nodes = json.loads(self.get_nodes())['data']
         for i in nodes:
-            if i.get(attr):
-                if i[attr] == name:
+            if i.get(attr) and i[attr] == name:
                     return True
         return False
 
@@ -172,7 +171,7 @@ class Hermit(object):
             self._click(key, value, 0.3)
         return True
 
-    def _swipe(self, action: str, scope: int, sleep: int = 0.3):
+    def _swipe(self, action: str, scope: int, sleep: float = 0.3):
         """基于shell的 滑动"""
         height, width = self.get_data_screen()
 
