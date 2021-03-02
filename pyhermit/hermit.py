@@ -16,15 +16,15 @@ class Hermit(object):
     def request(self, route: str):
         return requests.get(self.link + route, timeout=3)
 
-    def get_data_screen(self):
+    def data_screen(self):
         """获取屏幕长宽"""
         result = self.request('/data/screen').json()['data']
         return result['height'], result['width']
 
-    def get_nodes_text(self):
+    def nodes_text(self):
         return self.request('/data/nodes').text
 
-    def get_nodes(self):
+    def data_nodes(self):
         return json.dumps(self.request('/data/nodes').json(), sort_keys=True, indent=2, ensure_ascii=False)
 
     def in_page(self, text: str):
@@ -33,7 +33,7 @@ class Hermit(object):
         return False
 
     def _action(self, action_name) -> bool:
-        result = self.request('/action?obj=' + action_name)
+        result = self.request('/action/{0}'.format(action_name))
         if result.json()['code']:
             return False
         else:
@@ -75,27 +75,69 @@ class Hermit(object):
         """基于无障碍的截屏，限制Android 9.0"""
         return self._action('screen_shot')
 
+<<<<<<< HEAD
+    def _click(self, by: str, obj: str, index: int = -1, count: bool = False, sleep: int = 0):
+=======
     def _click(self, by: str, obj: str, sleep: float = 0):
+>>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
         time.sleep(sleep)
-        result = self.request('/click/{0}?obj={1}'.format(by, obj)).json()
+        router = '/click/{0}/{1}'.format(by, obj)
+        if index != -1:
+            router += '/{0}'.format(index)
+        elif count:
+            router += '/_count'
+        print(router)
+        result = self.request(router).json()
+        if result.get('code') == 0:
+            return result.get('data')
+        return False
+
+<<<<<<< HEAD
+    def click_id(self, id_name: str, index: int = -1, count: bool = False, sleep: int = 0):
+=======
+    def click_id(self, id_name: str, sleep: float = 0):
+>>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
+        """基于无障碍的根据资源ID点击"""
+        time.sleep(sleep)
+        return self._click('id', id_name, index, count)
+
+<<<<<<< HEAD
+    def click_text(self, text: str, index: int = -1, count: bool = False, sleep: int = 0):
+=======
+    def click_text(self, text: str, sleep: float = 0):
+>>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
+        """基于无障碍的根据资源文本点击"""
+        time.sleep(sleep)
+        return self._click('text', text, index, count)
+
+<<<<<<< HEAD
+    def click_desc(self, desc: str, index: int = -1, count: bool = False, sleep: int = 0):
+=======
+    def click_desc(self, desc: str, sleep: float = 0):
+>>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
+        """基于无障碍的根据资源描述点击"""
+        time.sleep(sleep)
+        return self._click('desc', desc)
+
+    def click(self, x: int, y: int, sleep: int = 0):
+        """无障碍点击坐标"""
+        time.sleep(sleep)
+        result = self.request('/click?x={0}&y={1}'.format(x, y)).json()
         if result['code']:
             return result['msg']
         return True
 
-    def click_id(self, id_name: str, sleep: float = 0):
-        """基于无障碍的根据资源ID点击"""
+    def swipe(self, x1: int, y1: int, x2: int, y2: int, sleep: int = 0):
+        """无障碍的方式 从（x1, y1）滑动到（x2, y2）"""
         time.sleep(sleep)
-        return self._click('id', id_name)
+        result = self.request('/swipe?x1={0}&y1={1}&x2={2}&y2={3}'.format(x1, y1, x2, y2)).json()
+        if result['code']:
+            return False
+        return True
 
-    def click_text(self, text: str, sleep: float = 0):
-        """基于无障碍的根据资源文本点击"""
-        time.sleep(sleep)
-        return self._click('text', text)
-
-    def click_desc(self, desc: str, sleep: float = 0):
-        """基于无障碍的根据资源描述点击"""
-        time.sleep(sleep)
-        return self._click('desc', desc)
+    def input(self, by: str, obj: str, text: str, sleep: int = 0):
+        rs = self.request('/input?by={0}&obj={1}&text={2}'.format(by, obj, text))
+        return True
 
     def cliboard_pull(self):
         """成功返回字符串，失败返回 False"""
@@ -134,15 +176,19 @@ class Hermit(object):
 
     def shell_swipe(self, x1: int, y1: int, x2: int, y2: int, sleep: float = 0):
         """通过shell的方式 从（x1, y1）滑动到（x2, y2）"""
+        time.sleep(sleep)
         result = self.request('/shell/swipe?x1={0}&y1={1}&x2={2}&y2={3}'.format(x1, y1, x2, y2)).json()
         if result['code']:
             return False
         return True
 
+<<<<<<< HEAD
+=======
     def input(self, by: str, obj: str, text: str, sleep: float = 0):
         rs = self.request('/input?by={0}&obj={1}&text={2}'.format(by, obj, text))
         return True
 
+>>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
     def _is_clickable(self, attr: str, name: str) -> bool:
         """检查该页面是否有该元素"""
         if attr not in ['text', 'id', 'desc']:
@@ -171,39 +217,63 @@ class Hermit(object):
             self._click(key, value, 0.3)
         return True
 
+<<<<<<< HEAD
+    def _swipe(self, action: str, scope: int, use_shell: bool = False, sleep: int = 0.3):
+=======
     def _swipe(self, action: str, scope: int, sleep: float = 0.3):
+>>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
         """基于shell的 滑动"""
         height, width = self.get_data_screen()
 
-        if scope in [i for i in range(1, 11)]:
-            scope = scope * 0.1 / 2
+        swipe_type = self.swipe
+        if use_shell:
+            swipe_type = self.shell_swipe
+        if scope in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+            scope = scope * 0.1 / 4
         else:
             scope = 0.2
 
-        seed = random.randint(0, 10)
+        seed1 = random.randint(0, 50)
+        seed2 = random.randint(0, 50)
+        seed = seed2 - seed1
         y1, y2 = int(height/2) - int(height*scope) + seed, int(height/2) + int(height*scope) - seed
         x1 = x2 = int(width/2) + int(seed*5)
         n1 = n2 = int(height/2) + int(seed*9)
         m1, m2 = int(width/2) - int(width*scope) + seed, int(width/2) + int(width*scope) - seed
 
         if action == 'up':
-            self.shell_swipe(x1, y2, x2, y1)
+            swipe_type(x1, y2, x2, y1)
         elif action == 'down':
-            self.shell_swipe(x1, y1, x2, y2)
+            swipe_type(x1, y1, x2, y2)
         elif action == 'left':
-            self.shell_swipe(m2, n1, m1, n2)
+            swipe_type(m2, n1, m1, n2)
         else:
-            self.shell_swipe(m1, n1, m2, n2)
+            swipe_type(m1, n1, m2, n2)
         time.sleep(sleep)
 
-    def swipe_down(self, scope: int = 2):
-        self._swipe('down', scope)
+    def swipe_down(self, scope: int = 2, sleep: int = 0):
+        self._swipe('down', scope, False, sleep)
 
-    def swipe_up(self, scope: int = 2):
-        self._swipe('up', scope)
+    def swipe_up(self, scope: int = 2, sleep: int = 0):
+        self._swipe('up', scope, False, sleep)
 
-    def swipe_left(self, scope: int = 2):
-        self._swipe('left', scope)
+    def swipe_left(self, scope: int = 2, sleep: int = 0):
+        self._swipe('left', scope, False, sleep)
 
-    def swipe_right(self, scope: int = 2):
-        self._swipe('right', scope)
+    def swipe_right(self, scope: int = 2, sleep: int = 0):
+        self._swipe('right', scope, False, sleep)
+
+    def shell_swipe_down(self, scope: int = 2, sleep: int = 0):
+        self._swipe('down', scope, True, sleep)
+
+    def shell_swipe_up(self, scope: int = 2, sleep: int = 0):
+        self._swipe('up', scope, True, sleep)
+
+    def shell_swipe_left(self, scope: int = 2, sleep: int = 0):
+        self._swipe('left', scope, True, sleep)
+
+    def shell_swipe_right(self, scope: int = 2, sleep: int = 0):
+        self._swipe('right', scope, True, sleep)
+
+    def data_device(self):
+        return self.request('/data/device').json()
