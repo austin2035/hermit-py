@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyhermit", # Replace with your own username
-    version="0.0.1",
+    version="1.01",
     author="LookCos",
     author_email="lookcos@gmail.com",
     description="Hermit的python版接口，详细说明请看README.md",
