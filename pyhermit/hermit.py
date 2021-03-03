@@ -75,11 +75,7 @@ class Hermit(object):
         """基于无障碍的截屏，限制Android 9.0"""
         return self._action('screen_shot')
 
-<<<<<<< HEAD
-    def _click(self, by: str, obj: str, index: int = -1, count: bool = False, sleep: int = 0):
-=======
-    def _click(self, by: str, obj: str, sleep: float = 0):
->>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
+    def _click(self, by: str, obj: str, index: int = -1, count: bool = False, sleep: float = 0):
         time.sleep(sleep)
         router = '/click/{0}/{1}'.format(by, obj)
         if index != -1:
@@ -92,34 +88,22 @@ class Hermit(object):
             return result.get('data')
         return False
 
-<<<<<<< HEAD
-    def click_id(self, id_name: str, index: int = -1, count: bool = False, sleep: int = 0):
-=======
-    def click_id(self, id_name: str, sleep: float = 0):
->>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
+    def click_id(self, id_name: str, index: int = -1, count: bool = False, sleep: float = 0):
         """基于无障碍的根据资源ID点击"""
         time.sleep(sleep)
         return self._click('id', id_name, index, count)
 
-<<<<<<< HEAD
-    def click_text(self, text: str, index: int = -1, count: bool = False, sleep: int = 0):
-=======
-    def click_text(self, text: str, sleep: float = 0):
->>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
+    def click_text(self, text: str, index: int = -1, count: bool = False, sleep: float = 0):
         """基于无障碍的根据资源文本点击"""
         time.sleep(sleep)
         return self._click('text', text, index, count)
 
-<<<<<<< HEAD
-    def click_desc(self, desc: str, index: int = -1, count: bool = False, sleep: int = 0):
-=======
     def click_desc(self, desc: str, sleep: float = 0):
->>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
         """基于无障碍的根据资源描述点击"""
         time.sleep(sleep)
         return self._click('desc', desc)
 
-    def click(self, x: int, y: int, sleep: int = 0):
+    def click(self, x: int, y: int, sleep: float = 0):
         """无障碍点击坐标"""
         time.sleep(sleep)
         result = self.request('/click?x={0}&y={1}'.format(x, y)).json()
@@ -127,7 +111,7 @@ class Hermit(object):
             return result['msg']
         return True
 
-    def swipe(self, x1: int, y1: int, x2: int, y2: int, sleep: int = 0):
+    def swipe(self, x1: int, y1: int, x2: int, y2: int, sleep: float = 0):
         """无障碍的方式 从（x1, y1）滑动到（x2, y2）"""
         time.sleep(sleep)
         result = self.request('/swipe?x1={0}&y1={1}&x2={2}&y2={3}'.format(x1, y1, x2, y2)).json()
@@ -135,18 +119,18 @@ class Hermit(object):
             return False
         return True
 
-    def input(self, by: str, obj: str, text: str, sleep: int = 0):
+    def input(self, by: str, obj: str, text: str, sleep: float = 0):
         rs = self.request('/input?by={0}&obj={1}&text={2}'.format(by, obj, text))
         return True
 
-    def cliboard_pull(self):
+    def clipboard_pull(self):
         """成功返回字符串，失败返回 False"""
         result = self.request('/data/cliBoard').json()
         if result['code']:
             return False
         return result['data']
 
-    def cliboard_push(self, content: str):
+    def clipboard_push(self, content: str):
         """设置剪贴板内容"""
         data = {'content': content}
         r = requests.put(self.link + '/data/cliBoard', data=data)
@@ -159,7 +143,7 @@ class Hermit(object):
             return True
         return False
 
-    def shell_keyevent(self, key: int, sleep: float = 0):
+    def shell_key_event(self, key: int, sleep: float = 0):
         time.sleep(sleep)
         result = self.request('/shell/keyevent?keycode=' + str(key)).json()
         if result['code']:
@@ -182,13 +166,10 @@ class Hermit(object):
             return False
         return True
 
-<<<<<<< HEAD
-=======
     def input(self, by: str, obj: str, text: str, sleep: float = 0):
         rs = self.request('/input?by={0}&obj={1}&text={2}'.format(by, obj, text))
         return True
 
->>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
     def _is_clickable(self, attr: str, name: str) -> bool:
         """检查该页面是否有该元素"""
         if attr not in ['text', 'id', 'desc']:
@@ -217,11 +198,7 @@ class Hermit(object):
             self._click(key, value, 0.3)
         return True
 
-<<<<<<< HEAD
-    def _swipe(self, action: str, scope: int, use_shell: bool = False, sleep: int = 0.3):
-=======
-    def _swipe(self, action: str, scope: int, sleep: float = 0.3):
->>>>>>> 6b3d19e02e0c921eba515eac3823a218328bce12
+    def _swipe(self, action: str, scope: int, use_shell: bool = False, sleep: float = 0.3):
         """基于shell的 滑动"""
         height, width = self.get_data_screen()
 
@@ -251,28 +228,28 @@ class Hermit(object):
             swipe_type(m1, n1, m2, n2)
         time.sleep(sleep)
 
-    def swipe_down(self, scope: int = 2, sleep: int = 0):
+    def swipe_down(self, scope: int = 2, sleep: float = 0):
         self._swipe('down', scope, False, sleep)
 
-    def swipe_up(self, scope: int = 2, sleep: int = 0):
+    def swipe_up(self, scope: int = 2, sleep: float = 0):
         self._swipe('up', scope, False, sleep)
 
-    def swipe_left(self, scope: int = 2, sleep: int = 0):
+    def swipe_left(self, scope: int = 2, sleep: float = 0):
         self._swipe('left', scope, False, sleep)
 
-    def swipe_right(self, scope: int = 2, sleep: int = 0):
+    def swipe_right(self, scope: int = 2, sleep: float = 0):
         self._swipe('right', scope, False, sleep)
 
-    def shell_swipe_down(self, scope: int = 2, sleep: int = 0):
+    def shell_swipe_down(self, scope: int = 2, sleep: float = 0):
         self._swipe('down', scope, True, sleep)
 
-    def shell_swipe_up(self, scope: int = 2, sleep: int = 0):
+    def shell_swipe_up(self, scope: int = 2, sleep: float = 0):
         self._swipe('up', scope, True, sleep)
 
-    def shell_swipe_left(self, scope: int = 2, sleep: int = 0):
+    def shell_swipe_left(self, scope: int = 2, sleep: float = 0):
         self._swipe('left', scope, True, sleep)
 
-    def shell_swipe_right(self, scope: int = 2, sleep: int = 0):
+    def shell_swipe_right(self, scope: int = 2, sleep: float = 0):
         self._swipe('right', scope, True, sleep)
 
     def data_device(self):
