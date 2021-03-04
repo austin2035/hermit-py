@@ -82,7 +82,6 @@ class Hermit(object):
             router += '/{0}'.format(index)
         elif count:
             router += '/_count'
-        print(router)
         result = self.request(router).json()
         if result.get('code') == 0:
             return result.get('data')
@@ -178,10 +177,10 @@ class Hermit(object):
             attr = 'resource-id'
         elif attr == 'desc':
             attr = 'content-desc'
-        nodes = json.loads(self.get_nodes())['data']
+        nodes = json.loads(self.data_nodes())['data']
         for i in nodes:
             if i.get(attr) and i[attr] == name:
-                    return True
+                return True
         return False
 
     def click_channel(self, pipeline: list):
@@ -200,7 +199,7 @@ class Hermit(object):
 
     def _swipe(self, action: str, scope: int, use_shell: bool = False, sleep: float = 0.3):
         """基于shell的 滑动"""
-        height, width = self.get_data_screen()
+        height, width = self.data_screen()
 
         swipe_type = self.swipe
         if use_shell:
@@ -213,10 +212,10 @@ class Hermit(object):
         seed1 = random.randint(0, 50)
         seed2 = random.randint(0, 50)
         seed = seed2 - seed1
-        y1, y2 = int(height/2) - int(height*scope) + seed, int(height/2) + int(height*scope) - seed
-        x1 = x2 = int(width/2) + int(seed*5)
-        n1 = n2 = int(height/2) + int(seed*9)
-        m1, m2 = int(width/2) - int(width*scope) + seed, int(width/2) + int(width*scope) - seed
+        y1, y2 = int(height / 2) - int(height * scope) + seed, int(height / 2) + int(height * scope) - seed
+        x1 = x2 = int(width / 2) + int(seed * 5)
+        n1 = n2 = int(height / 2) + int(seed * 9)
+        m1, m2 = int(width / 2) - int(width * scope) + seed, int(width / 2) + int(width * scope) - seed
 
         if action == 'up':
             swipe_type(x1, y2, x2, y1)
