@@ -253,3 +253,9 @@ class Hermit(object):
 
     def data_device(self):
         return self.request('/data/device').json()
+    
+    def start_app(self, pkg: str):
+        result = self.request('/shell/start?packageName=' + pkg).json()
+        if result['code']:
+            return False
+        return True
