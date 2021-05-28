@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e41777bf-4129-4ae3-ab1e-bf4db180dc3a" name="Default Changelist" comment="更新版本号">
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyhermit/hermit.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyhermit/hermit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +38,7 @@
       <updated>1614697731305</updated>
       <workItem from="1614697734059" duration="162000" />
       <workItem from="1614773259544" duration="7359000" />
+      <workItem from="1622186784579" duration="96000" />
     </task>
     <task id="LOCAL-00001" summary="增强部分无障碍的功能">
       <created>1614697771563</created>

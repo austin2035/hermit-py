@@ -28,7 +28,7 @@ class Hermit(object):
         return json.dumps(self.request('/data/nodes').json(), sort_keys=True, indent=2, ensure_ascii=False)
 
     def in_page(self, text: str):
-        if text in self.get_nodes_text():
+        if text in self.nodes_text():
             return True
         return False
 
